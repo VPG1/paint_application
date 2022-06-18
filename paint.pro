@@ -15,7 +15,8 @@ SOURCES += \
 
 HEADERS += \
     mainwindow.h \
-    scribblearea.h
+    scribblearea.h \
+    usersettings.h
 
 FORMS += \
     mainwindow.ui
