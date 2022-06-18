@@ -5,8 +5,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QAction>
-#include <QActionGroup>
-#include <QWidgetAction>
+#include <QColorDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,7 +18,18 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private slots:
+    void changingColor();
+
 private:
     Ui::MainWindow *ui;
+
+    QColor selectedColor = Qt::black;
+    QSize colorPixmapSize = QSize(20, 20);
+    QAction *changeColorAction;
+
+
+
 };
 #endif // MAINWINDOW_H
