@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QAction>
 #include <QColorDialog>
+#include "scribblearea.h"
+#include "usersettings.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,11 +27,11 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    QColor selectedColor = Qt::black;
+    UserSettings &userSettings;
+
+    ScribbleArea *scribbleArea;
+
     QSize colorPixmapSize = QSize(20, 20);
     QAction *changeColorAction;
-
-
-
 };
 #endif // MAINWINDOW_H
