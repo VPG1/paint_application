@@ -32,4 +32,3 @@ void MainWindow::changingColor()
     changeColorAction->setIcon(QIcon(pixmap));
 }
 
-

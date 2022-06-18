@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    scribblearea.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    scribblearea.h
 
 FORMS += \
     mainwindow.ui
