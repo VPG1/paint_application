@@ -11,7 +11,7 @@ class ScribbleArea : public QWidget
 {
     Q_OBJECT
 public:
-    ScribbleArea(UserSettings &userSetting, QWidget *parent = nullptr);
+    ScribbleArea(QWidget *parent = nullptr);
 
 protected:
     void paintEvent(QPaintEvent *) override;
@@ -24,8 +24,6 @@ private:
 
     QPoint lastPoint;
     bool sribbling = false; // происходит ли рисование в данный момент времени
-
-    UserSettings &userSettings;
 
     void drawLineTo(QPoint endPoint);
 };

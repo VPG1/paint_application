@@ -4,8 +4,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , userSettings(*(new UserSettings{Qt::black, 10}))
-    , scribbleArea(new ScribbleArea(userSettings, this))
+    , scribbleArea(new ScribbleArea(this))
 {
 
     ui->setupUi(this);
@@ -16,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // init change color action
     auto pixmap = QPixmap(colorPixmapSize);
-    pixmap.fill(userSettings.color);
+    pixmap.fill(UserSettings::getInstance()->color);
     changeColorAction = new QAction(QIcon(pixmap), "change color");
     connect(changeColorAction, &QAction::triggered, this, &MainWindow::changingColor);
     ui->toolBar->addAction(changeColorAction);
@@ -29,9 +28,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::changingColor()
 {
-    userSettings.color = QColorDialog::getColor();
+    UserSettings::getInstance()->color = QColorDialog::getColor();
     auto pixmap = QPixmap(colorPixmapSize);
-    pixmap.fill(userSettings.color);
+    pixmap.fill(UserSettings::getInstance()->color);
     changeColorAction->setIcon(QIcon(pixmap));
 }
 

@@ -27,8 +27,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    UserSettings &userSettings;
-
     ScribbleArea *scribbleArea;
 
     QSize colorPixmapSize = QSize(20, 20);

@@ -1,7 +1,7 @@
 #include "scribblearea.h"
 
-ScribbleArea::ScribbleArea(UserSettings &userSetting, QWidget *parent)
-    :  QWidget(parent), image(200, 200, QImage::Format_RGB32), userSettings(userSetting)
+ScribbleArea::ScribbleArea(QWidget *parent)
+    :  QWidget(parent), image(200, 200, QImage::Format_RGB32)
 {
     image.fill(Qt::white);
     // содержимое находится в верхнем левом углу и не изменеяется при изменении размеров окна
@@ -41,13 +41,13 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 void ScribbleArea::drawLineTo(QPoint endPoint)
 {
     QPainter painter(&image);
-    painter.setPen(QPen(userSettings.color, userSettings.penWidth,
+    painter.setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth,
                         Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
     painter.drawLine(lastPoint, endPoint);
 
     // обновляем область в которой нарисовали линию
     // учитываем penWidth при обновление
-    int rad = (userSettings.penWidth / 2) + 2;
+    int rad = (UserSettings::getInstance()->penWidth / 2) + 2;
     update(QRect(lastPoint, endPoint).normalized().adjusted(-rad, -rad, rad, rad));
 
     lastPoint = endPoint;
