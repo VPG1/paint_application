@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent)
     changeColorAction = new QAction(QIcon(pixmap), "change color");
     connect(changeColorAction, &QAction::triggered, this, &MainWindow::changingColor);
     ui->toolBar->addAction(changeColorAction);
+
+    // init change pen width action
+    ui->toolBar->addWidget(new Slider);
 }
 
 MainWindow::~MainWindow()

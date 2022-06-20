@@ -3,15 +3,9 @@
 
 #include <QColor>
 
-//// структура
-//struct UserSettings{
-//    QColor color = Qt::black;
-//    int penWidth = 10;
-//};
-
 // singleton
 class UserSettings{
-    static UserSettings *instance;
+    static std::unique_ptr<UserSettings> instance;
 
     UserSettings() = default;
 public:
@@ -19,7 +13,7 @@ public:
     UserSettings &operator=(UserSettings & userSettings) = delete;
 
     QColor color = Qt::black;
-    int penWidth = 10;
+    int penWidth = 5;
 
     static UserSettings *getInstance();
 };

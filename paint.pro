@@ -12,18 +12,18 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     scribblearea.cpp \
-#    slider.cpp \
+    slider.cpp \
     usersettings.cpp
 
 HEADERS += \
     mainwindow.h \
     scribblearea.h \
-#    slider.h \
+    slider.h \
     usersettings.h
 
 FORMS += \
     mainwindow.ui \
-#    slider.ui
+    slider.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

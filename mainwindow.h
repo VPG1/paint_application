@@ -8,6 +8,7 @@
 #include <QColorDialog>
 #include "scribblearea.h"
 #include "usersettings.h"
+#include "slider.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,5 +32,6 @@ private:
 
     QSize colorPixmapSize = QSize(20, 20);
     QAction *changeColorAction;
+    QAction *changePenWidthAction;
 };
 #endif // MAINWINDOW_H
