@@ -11,12 +11,15 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    pendrawstrategy.cpp \
     scribblearea.cpp \
     slider.cpp \
     usersettings.cpp
 
 HEADERS += \
+    drawstrategy.h \
     mainwindow.h \
+    pendrawstrategy.h \
     scribblearea.h \
     slider.h \
     usersettings.h
