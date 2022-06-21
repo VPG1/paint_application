@@ -9,17 +9,21 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    linedrawstrategy.cpp \
     main.cpp \
     mainwindow.cpp \
     pendrawstrategy.cpp \
+    rectangledrawstrategy.cpp \
     scribblearea.cpp \
     slider.cpp \
     usersettings.cpp
 
 HEADERS += \
     drawstrategy.h \
+    linedrawstrategy.h \
     mainwindow.h \
     pendrawstrategy.h \
+    rectangledrawstrategy.h \
     scribblearea.h \
     slider.h \
     usersettings.h

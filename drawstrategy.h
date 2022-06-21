@@ -6,12 +6,13 @@
 class DrawStrategy : public QObject{
     Q_OBJECT
 protected:
+    QImage *m_image;
     QPainter *m_painter;
 public:
     DrawStrategy() = default;
     virtual ~DrawStrategy(){}
 
-    virtual void press(QMouseEvent *event, QPainter *painter) = 0;
+    virtual void press(QMouseEvent *event, QImage *image) = 0;
     virtual void move(QMouseEvent *event) = 0;
     virtual void release(QMouseEvent *event) = 0;
 

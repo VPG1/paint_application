@@ -3,10 +3,16 @@
 PenDrawStrategy::PenDrawStrategy() : DrawStrategy()
 {}
 
-void PenDrawStrategy::press(QMouseEvent *event, QPainter *painter)
+void PenDrawStrategy::press(QMouseEvent *event, QImage *image)
 {
-    m_painter = painter;
+    m_image = image;
+
+    m_painter = new QPainter(image);
+    m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
+                             Qt::RoundJoin));
+
     lastPoint = event->pos();
+
 }
 
 void PenDrawStrategy::move(QMouseEvent *event)
@@ -17,6 +23,8 @@ void PenDrawStrategy::move(QMouseEvent *event)
 void PenDrawStrategy::release(QMouseEvent *event)
 {
     drawLineTo(event->pos());
+
+    m_painter->end();
 }
 
 void PenDrawStrategy::drawLineTo(QPoint endPoint)
@@ -25,8 +33,8 @@ void PenDrawStrategy::drawLineTo(QPoint endPoint)
 
     // обновляем область в которой нарисовали линию
     // учитываем penWidth при обновление
-    int rad = (UserSettings::getInstance()->penWidth / 2) + 2;
-    emit updateArea(QRect(lastPoint, endPoint).normalized().adjusted(-rad, -rad, rad, rad));
+//    int rad = (UserSettings::getInstance()->penWidth / 2) + 2;
+//    emit updateArea(QRect(lastPoint, endPoint).normalized().adjusted(-rad, -rad, rad, rad));
 
     lastPoint = endPoint;
 }

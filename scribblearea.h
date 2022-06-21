@@ -7,6 +7,8 @@
 #include <QPainter>
 #include "usersettings.h"
 #include "pendrawstrategy.h"
+#include "linedrawstrategy.h"
+#include "rectangledrawstrategy.h"
 
 class ScribbleArea : public QWidget
 {
@@ -23,14 +25,7 @@ protected:
 private:
     QImage image; // переменная для хранения рисунка пользователя
 
-    std::unique_ptr<DrawStrategy> drawStrategy;
-
-    QPainter *painter;
-
-//    QPoint lastPoint;
     bool sribbling = false; // происходит ли рисование в данный момент времен
-
-//    void drawLineTo(QPoint endPoint);
 
 private slots:
     void updateAreaSlot(QRect rect);

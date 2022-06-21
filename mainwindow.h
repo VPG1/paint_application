@@ -9,6 +9,7 @@
 #include "scribblearea.h"
 #include "usersettings.h"
 #include "slider.h"
+#include "rectangledrawstrategy.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,6 +25,9 @@ public:
 
 private slots:
     void changingColor();
+    void chosePen();
+    void choseLine();
+    void choseRectangle();
 
 private:
     Ui::MainWindow *ui;

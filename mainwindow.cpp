@@ -11,13 +11,20 @@ MainWindow::MainWindow(QWidget *parent)
 
     setCentralWidget(scribbleArea);
 
-    ui->toolBar->addAction("pen");
+    connect(ui->toolBar->addAction("pen"),
+            &QAction::triggered, this,  &MainWindow::chosePen);
+    connect(ui->toolBar->addAction("line"),
+            &QAction::triggered, this, &MainWindow::choseLine);
+    connect(ui->toolBar->addAction("rectangle"),
+            &QAction::triggered, this, &MainWindow::choseRectangle);
+
 
     // init change color action
     auto pixmap = QPixmap(colorPixmapSize);
     pixmap.fill(UserSettings::getInstance()->color);
     changeColorAction = new QAction(QIcon(pixmap), "change color");
     connect(changeColorAction, &QAction::triggered, this, &MainWindow::changingColor);
+
     ui->toolBar->addAction(changeColorAction);
 
     // init change pen width action
@@ -35,5 +42,20 @@ void MainWindow::changingColor()
     auto pixmap = QPixmap(colorPixmapSize);
     pixmap.fill(UserSettings::getInstance()->color);
     changeColorAction->setIcon(QIcon(pixmap));
+}
+
+void MainWindow::chosePen()
+{
+    UserSettings::getInstance()->drawStrategy = std::make_unique<PenDrawStrategy>();
+}
+
+void MainWindow::choseLine()
+{
+    UserSettings::getInstance()->drawStrategy = std::make_unique<LineDrawStrategy>();
+}
+
+void MainWindow::choseRectangle()
+{
+    UserSettings::getInstance()->drawStrategy = std::make_unique<RectangleDrawStrategy>();
 }
 
