@@ -9,6 +9,9 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ellipsedrawstrategy.cpp \
+    floodfill.cpp \
+    floodfillstrategy.cpp \
     linedrawstrategy.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -20,6 +23,9 @@ SOURCES += \
 
 HEADERS += \
     drawstrategy.h \
+    ellipsedrawstrategy.h \
+    floodfill.h \
+    floodfillstrategy.h \
     linedrawstrategy.h \
     mainwindow.h \
     pendrawstrategy.h \

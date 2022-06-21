@@ -17,6 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
             &QAction::triggered, this, &MainWindow::choseLine);
     connect(ui->toolBar->addAction("rectangle"),
             &QAction::triggered, this, &MainWindow::choseRectangle);
+    connect(ui->toolBar->addAction("ellipse"),
+            &QAction::triggered, this, &MainWindow::choseEllipse);
+    connect(ui->toolBar->addAction("flood fill"),
+            &QAction::triggered, this, &MainWindow::choseFloodFill);
 
 
     // init change color action
@@ -57,5 +61,15 @@ void MainWindow::choseLine()
 void MainWindow::choseRectangle()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<RectangleDrawStrategy>();
+}
+
+void MainWindow::choseEllipse()
+{
+    UserSettings::getInstance()->drawStrategy = std::make_unique<EllipseDrawStrategy>();
+}
+
+void MainWindow::choseFloodFill()
+{
+    UserSettings::getInstance()->drawStrategy = std::make_unique<FloodFillStrategy>();
 }
 

@@ -10,6 +10,8 @@
 #include "usersettings.h"
 #include "slider.h"
 #include "rectangledrawstrategy.h"
+#include "ellipsedrawstrategy.h"
+#include "floodfillstrategy.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,9 +27,12 @@ public:
 
 private slots:
     void changingColor();
+
     void chosePen();
     void choseLine();
     void choseRectangle();
+    void choseEllipse();
+    void choseFloodFill();
 
 private:
     Ui::MainWindow *ui;
