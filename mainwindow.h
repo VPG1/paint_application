@@ -33,6 +33,7 @@ private slots:
     void choseRectangle();
     void choseEllipse();
     void choseFloodFill();
+    void clear();
 
 private:
     Ui::MainWindow *ui;
