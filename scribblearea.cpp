@@ -16,7 +16,11 @@ ScribbleArea::ScribbleArea(QWidget *parent)
 ScribbleArea::~ScribbleArea()
 {
 }
-
+void ScribbleArea::clearImage()
+{
+    image.fill(Qt::white);
+    update();
+}
 void ScribbleArea::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
