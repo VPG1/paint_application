@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
             &QAction::triggered, this, &MainWindow::choseEllipse);
     connect(ui->toolBar->addAction("flood fill"),
             &QAction::triggered, this, &MainWindow::choseFloodFill);
+    connect(ui->toolBar->addAction("clear"),
+            &QAction::triggered, this, &MainWindow::clear);
 
 
     // init change color action
@@ -71,5 +73,9 @@ void MainWindow::choseEllipse()
 void MainWindow::choseFloodFill()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<FloodFillStrategy>();
+}
+void MainWindow::clear()
+{
+    scribbleArea->clearImage();
 }
 
