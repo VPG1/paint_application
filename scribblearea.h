@@ -16,6 +16,7 @@ class ScribbleArea : public QWidget
 public:
     ScribbleArea(QWidget *parent = nullptr);
     ~ScribbleArea();
+    void clearImage();
 protected:
     void paintEvent(QPaintEvent *) override;
     void mousePressEvent(QMouseEvent *) override;
