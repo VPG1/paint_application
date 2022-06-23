@@ -11,12 +11,13 @@ void FloodFillStrategy::press(QMouseEvent *event, QImage *image)
 //    floodFill(ima)
 }
 
-void FloodFillStrategy::move(QMouseEvent *event)
+void FloodFillStrategy::move(QMouseEvent *)
 {
     // ничего не делаем
 }
 
-void FloodFillStrategy::release(QMouseEvent *event)
+void FloodFillStrategy::release(QMouseEvent *)
 {
     // ничего не делаем
 }
+
