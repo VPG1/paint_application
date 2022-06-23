@@ -23,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent)
             &QAction::triggered, this, &MainWindow::choseFloodFill);
 
 
+
+
     // init change color action
     auto pixmap = QPixmap(colorPixmapSize);
     pixmap.fill(UserSettings::getInstance()->color);
@@ -33,6 +35,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     // init change pen width action
     ui->toolBar->addWidget(new Slider);
+
+
+    QAction *undoAction = new QAction("undo");
+    undoAction->setShortcut(QKeySequence::Undo);
+    ui->toolBar->addAction(undoAction);
+    connect(undoAction, &QAction::triggered, scribbleArea, &ScribbleArea::undo);
+
+    QAction *redoAction = new QAction("redo");
+    redoAction->setShortcut(QKeySequence::Redo);
+    ui->toolBar->addAction(redoAction);
+    connect(redoAction, &QAction::triggered, scribbleArea, &ScribbleArea::redo);
 }
 
 MainWindow::~MainWindow()

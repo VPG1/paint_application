@@ -8,6 +8,9 @@ ScribbleArea::ScribbleArea(QWidget *parent)
     // содержимое находится в верхнем левом углу и не изменеяется при изменении размеров окна
     setAttribute(Qt::WA_StaticContents);
 
+    previousStates.push_back(image.copy());
+    curImage = previousStates.begin();
+
 //    drawStrategy = std::unique_ptr<RectangleDrawStrategy>(new RectangleDrawStrategy);
 
 //    connect(UserSettings::getInstance()->drawStrategy.get(), &DrawStrategy::updateArea, this, &ScribbleArea::updateAreaSlot);
@@ -26,11 +29,16 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
 
 void ScribbleArea::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton){
+    // удаляем все состояния канвы следующие за текущим
+    if(curImage != previousStates.end() - 1){
+        previousStates.assign(previousStates.begin(), curImage + 1);
+    }
 
+
+    if(event->button() == Qt::LeftButton){
         UserSettings::getInstance()->drawStrategy->press(event, &image);
 
-        sribbling = true;
+        scribbling = true;
 
         update();
     }
@@ -38,7 +46,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
-    if((event->buttons() & Qt::LeftButton) && sribbling){
+    if((event->buttons() & Qt::LeftButton) && scribbling){
         UserSettings::getInstance()->drawStrategy->move(event);
 
         update();
@@ -47,16 +55,44 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton && sribbling){
+    if(event->button() == Qt::LeftButton && scribbling){
         UserSettings::getInstance()->drawStrategy->release(event);
 
-        sribbling = false;
+        scribbling = false;
 
         update();
+
+
+        previousStates.push_back(image.copy());
+
+        ++curImage;
+        if(previousStates.size() >= 51){
+            previousStates.pop_front();
+        }
     }
 }
 
 void ScribbleArea::updateAreaSlot(QRect rect)
 {
     update(rect);
+}
+
+void ScribbleArea::undo()
+{
+    // если есть предыдущие состояние канвы и в данный момент не рисуем то делаем undo
+    if(curImage != previousStates.begin() && !scribbling){
+        --curImage;
+        image = curImage->copy();
+        update();
+    }
+}
+
+void ScribbleArea::redo()
+{
+    // если есть следущие состояние канвы и в данный момент не рисуем то делаем redo
+    if(curImage != previousStates.end() - 1 && !scribbling){
+        ++curImage;
+        image = curImage->copy();
+        update();
+    }
 }

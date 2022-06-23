@@ -5,10 +5,20 @@
 #include <QPaintEvent>
 #include <QMouseEvent>
 #include <QPainter>
+#include <deque>
 #include "usersettings.h"
 #include "pendrawstrategy.h"
 #include "linedrawstrategy.h"
 #include "rectangledrawstrategy.h"
+
+
+class Node{
+public:
+    int value;
+    Node *leftChild;
+    Node *rightChild;
+};
+
 
 class ScribbleArea : public QWidget
 {
@@ -25,10 +35,16 @@ protected:
 private:
     QImage image; // переменная для хранения рисунка пользователя
 
-    bool sribbling = false; // происходит ли рисование в данный момент времен
+    std::deque<QImage> previousStates;
+    std::deque<QImage>::iterator curImage;
 
-private slots:
+    bool scribbling = false; // происходит ли рисование в данный момент времен
+
+public slots:
     void updateAreaSlot(QRect rect);
+
+    void undo();
+    void redo();
 };
 
 #endif // SCRIBBLEAREA_H
