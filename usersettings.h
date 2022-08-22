@@ -15,6 +15,7 @@ public:
     UserSettings(UserSettings & userSettings) = delete;
     UserSettings &operator=(UserSettings & userSettings) = delete;
 
+    // основыне настройки
     QColor color = Qt::black;
     int penWidth = 5;
     std::unique_ptr<DrawStrategy> drawStrategy;

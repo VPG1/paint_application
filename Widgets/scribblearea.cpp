@@ -1,15 +1,15 @@
 #include "scribblearea.h"
 
 ScribbleArea::ScribbleArea(QWidget *parent)
-    :  QWidget(parent), image(1000, 1000, QImage::Format_RGB32)
+    :  QWidget(parent), m_image(1000, 1000, QImage::Format_RGB32)
 {
-    image.fill(Qt::white);
+    m_image.fill(Qt::white);
 
     // содержимое находится в верхнем левом углу и не изменеяется при изменении размеров окна
     setAttribute(Qt::WA_StaticContents);
 
-    previousStates.push_back(image.copy());
-    curImage = previousStates.begin();
+    m_previousStates.push_back(m_image.copy());
+    m_curImage = m_previousStates.begin();
 
 //    drawStrategy = std::unique_ptr<RectangleDrawStrategy>(new RectangleDrawStrategy);
 
@@ -24,21 +24,21 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QRect boudingRect = event->rect(); // область которую нужно перерисовать
-    painter.drawImage(boudingRect, image, boudingRect);
+    painter.drawImage(boudingRect, m_image, boudingRect);
 }
 
 void ScribbleArea::mousePressEvent(QMouseEvent *event)
 {
     // удаляем все состояния канвы следующие за текущим
-    if(curImage != previousStates.end() - 1){
-        previousStates.assign(previousStates.begin(), curImage + 1);
+    if(m_curImage != m_previousStates.end() - 1){
+        m_previousStates.assign(m_previousStates.begin(), m_curImage + 1);
     }
 
 
     if(event->button() == Qt::LeftButton){
-        UserSettings::getInstance()->drawStrategy->press(event, &image);
+        UserSettings::getInstance()->drawStrategy->press(event, &m_image);
 
-        scribbling = true;
+        m_scribbling = true;
 
         update();
     }
@@ -46,7 +46,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
-    if((event->buttons() & Qt::LeftButton) && scribbling){
+    if((event->buttons() & Qt::LeftButton) && m_scribbling){
         UserSettings::getInstance()->drawStrategy->move(event);
 
         update();
@@ -55,19 +55,19 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton && scribbling){
+    if(event->button() == Qt::LeftButton && m_scribbling){
         UserSettings::getInstance()->drawStrategy->release(event);
 
-        scribbling = false;
+        m_scribbling = false;
 
         update();
 
 
-        previousStates.push_back(image.copy());
+        m_previousStates.push_back(m_image.copy());
 
-        ++curImage;
-        if(previousStates.size() >= 51){
-            previousStates.pop_front();
+        ++m_curImage;
+        if(m_previousStates.size() >= 51){
+            m_previousStates.pop_front();
         }
     }
 }
@@ -80,9 +80,9 @@ void ScribbleArea::updateAreaSlot(QRect rect)
 void ScribbleArea::undo()
 {
     // если есть предыдущие состояние канвы и в данный момент не рисуем то делаем undo
-    if(curImage != previousStates.begin() && !scribbling){
-        --curImage;
-        image = curImage->copy();
+    if(m_curImage != m_previousStates.begin() && !m_scribbling){
+        --m_curImage;
+        m_image = m_curImage->copy();
         update();
     }
 }
@@ -90,9 +90,9 @@ void ScribbleArea::undo()
 void ScribbleArea::redo()
 {
     // если есть следущие состояние канвы и в данный момент не рисуем то делаем redo
-    if(curImage != previousStates.end() - 1 && !scribbling){
-        ++curImage;
-        image = curImage->copy();
+    if(m_curImage != m_previousStates.end() - 1 && !m_scribbling){
+        ++m_curImage;
+        m_image = m_curImage->copy();
         update();
     }
 }

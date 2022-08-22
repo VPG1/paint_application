@@ -37,10 +37,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    ScribbleArea *scribbleArea;
+    ScribbleArea *m_scribbleArea;
 
-    QSize colorPixmapSize = QSize(20, 20);
-    QAction *changeColorAction;
-    QAction *changePenWidthAction;
+    QSize m_colorPixmapSize = QSize(20, 20);
+    QAction *m_changeColorAction;
+    QAction *m_changePenWidthAction;
 };
 #endif // MAINWINDOW_H
