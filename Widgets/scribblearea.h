@@ -12,12 +12,6 @@
 #include "rectangledrawstrategy.h"
 
 
-class Node{
-public:
-    int value;
-    Node *leftChild;
-    Node *rightChild;
-};
 
 
 class ScribbleArea : public QWidget

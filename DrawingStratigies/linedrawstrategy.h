@@ -7,8 +7,11 @@
 
 class LineDrawStrategy : public DrawStrategy
 {
-    QPoint firstPoint;
-    QImage firstImage;
+    QImage *m_image;
+    QPainter *m_painter;
+
+    QPoint m_firstPoint;
+    QImage m_firstImage;
 
 public:
     LineDrawStrategy();

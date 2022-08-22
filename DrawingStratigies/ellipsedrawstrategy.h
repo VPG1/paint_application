@@ -8,8 +8,11 @@
 
 class EllipseDrawStrategy : public DrawStrategy
 {
-    QImage firstImage;
-    QPoint firstPoint;
+    QImage *m_image;
+    QPainter *m_painter;
+
+    QImage m_firstImage;
+    QPoint m_firstPoint;
 
 public:
     EllipseDrawStrategy();

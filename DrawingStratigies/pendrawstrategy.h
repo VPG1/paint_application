@@ -7,8 +7,10 @@
 
 class PenDrawStrategy : public DrawStrategy
 {
+    QImage *m_image;
+    QPainter *m_painter;
 
-    QPoint lastPoint;
+    QPoint m_lastPoint;
 public:
     PenDrawStrategy();
 

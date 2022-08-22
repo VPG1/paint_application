@@ -4,9 +4,7 @@
 #include <QMouseEvent>
 
 class DrawStrategy{
-protected:
-    QImage *m_image;
-    QPainter *m_painter;
+
 public:
     DrawStrategy() = default;
     virtual ~DrawStrategy(){}

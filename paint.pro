@@ -8,35 +8,40 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += $$PWD/DrawingStratigies
+INCLUDEPATH += $$PWD/Algorithms
+INCLUDEPATH += $$PWD/Widgets
+
+
 SOURCES += \
-    ellipsedrawstrategy.cpp \
-    floodfill.cpp \
-    floodfillstrategy.cpp \
-    linedrawstrategy.cpp \
+    DrawingStratigies/ellipsedrawstrategy.cpp \
+    Algorithms/floodfill.cpp \
+    DrawingStratigies/floodfillstrategy.cpp \
+    DrawingStratigies/linedrawstrategy.cpp \
     main.cpp \
-    mainwindow.cpp \
-    pendrawstrategy.cpp \
-    rectangledrawstrategy.cpp \
-    scribblearea.cpp \
-    slider.cpp \
+    Widgets/mainwindow.cpp \
+    DrawingStratigies/pendrawstrategy.cpp \
+    DrawingStratigies/rectangledrawstrategy.cpp \
+    Widgets/scribblearea.cpp \
+    Widgets/slider.cpp \
     usersettings.cpp
 
 HEADERS += \
-    drawstrategy.h \
-    ellipsedrawstrategy.h \
-    floodfill.h \
-    floodfillstrategy.h \
-    linedrawstrategy.h \
-    mainwindow.h \
-    pendrawstrategy.h \
-    rectangledrawstrategy.h \
-    scribblearea.h \
-    slider.h \
+    DrawingStratigies/drawstrategy.h \
+    DrawingStratigies/ellipsedrawstrategy.h \
+    Algorithms/floodfill.h \
+    DrawingStratigies/floodfillstrategy.h \
+    DrawingStratigies/linedrawstrategy.h \
+    Widgets/mainwindow.h \
+    DrawingStratigies/pendrawstrategy.h \
+    DrawingStratigies/rectangledrawstrategy.h \
+    Widgets/scribblearea.h \
+    Widgets/slider.h \
     usersettings.h
 
 FORMS += \
-    mainwindow.ui \
-    slider.ui
+    Widgets/mainwindow.ui \
+    Widgets/slider.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

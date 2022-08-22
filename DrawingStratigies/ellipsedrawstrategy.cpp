@@ -8,20 +8,20 @@ EllipseDrawStrategy::EllipseDrawStrategy()
 void EllipseDrawStrategy::press(QMouseEvent *event, QImage *image)
 {
     m_image = image;
-    firstImage = m_image->copy();
+    m_firstImage = m_image->copy();
 
 
     m_painter = new QPainter(m_image);
     m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
                              Qt::RoundJoin));
 
-    firstPoint = event->pos();
+    m_firstPoint = event->pos();
 }
 
 void EllipseDrawStrategy::move(QMouseEvent *event)
 {
     m_painter->end();
-    *m_image = firstImage.copy();
+    *m_image = m_firstImage.copy();
     m_painter->begin(m_image);
 
     m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
@@ -38,5 +38,5 @@ void EllipseDrawStrategy::release(QMouseEvent *event)
 
 void EllipseDrawStrategy::drawEllepse(QPoint endPoint)
 {
-    m_painter->drawEllipse(QRect(firstPoint, endPoint));
+    m_painter->drawEllipse(QRect(m_firstPoint, endPoint));
 }

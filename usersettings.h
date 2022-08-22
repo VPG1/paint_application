@@ -2,7 +2,7 @@
 #define USERSETTINGS_H
 
 #include <QColor>
-#include "drawstrategy.h"
+#include "DrawingStratigies/drawstrategy.h"
 
 class PenDrawStrategy;
 

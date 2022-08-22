@@ -8,20 +8,20 @@ RectangleDrawStrategy::RectangleDrawStrategy()
 void RectangleDrawStrategy::press(QMouseEvent *event, QImage *image)
 {
     m_image = image;
-    firstImage = m_image->copy();
+    m_firstImage = m_image->copy();
 
 
     m_painter = new QPainter(m_image);
     m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
                              Qt::RoundJoin));
 
-    firstPoint = event->pos();
+    m_firstPoint = event->pos();
 }
 
 void RectangleDrawStrategy::move(QMouseEvent *event)
 {
     m_painter->end();
-    *m_image = firstImage.copy();
+    *m_image = m_firstImage.copy();
     m_painter->begin(m_image);
 
     m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
@@ -38,7 +38,7 @@ void RectangleDrawStrategy::release(QMouseEvent *event)
 
 void RectangleDrawStrategy::drawRectangleTo(QPoint endPoint)
 {
-    m_painter->drawRect(QRect(firstPoint, endPoint));
+    m_painter->drawRect(QRect(m_firstPoint, endPoint));
 
     // обновляем область в которой нарисовали линию
     // учитываем penWidth при обновление
