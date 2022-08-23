@@ -19,7 +19,31 @@ ScribbleArea::ScribbleArea(QWidget *parent)
 ScribbleArea::~ScribbleArea()
 {
 }
+bool ScribbleArea::openImage(const QString &fileName)
+{
+    QImage loadedImage;
+        if (!loadedImage.load(fileName))
+            return false;
 
+        QSize newSize = loadedImage.size().expandedTo(size());
+        resizeImage(&loadedImage, newSize);
+        image = loadedImage;
+        modified = false;
+        update();
+        return true;
+}
+
+bool ScribbleArea::saveImage(const QString &fileName, const char *fileFormat)
+{
+    QImage visibleImage = image;
+    //resizeImage(&visibleImage, size());
+
+    if (visibleImage.save(fileName, fileFormat)) {
+        modified = false;
+        return true;
+    }
+    return false;
+}
 void ScribbleArea::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
@@ -71,7 +95,17 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
         }
     }
 }
+void ScribbleArea::resizeImage(QImage *image, const QSize &newSize)
+{
+    if (image->size() == newSize)
+        return;
 
+    QImage newImage(newSize, QImage::Format_RGB32);
+    newImage.fill(qRgb(255, 255, 255));
+    QPainter painter(&newImage);
+    painter.drawImage(QPoint(0, 0), *image);
+    *image = newImage;
+}
 void ScribbleArea::updateAreaSlot(QRect rect)
 {
     update(rect);

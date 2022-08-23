@@ -22,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent)
             &QAction::triggered, this, &MainWindow::choseEllipse);
     connect(ui->toolBar->addAction("flood fill"),
             &QAction::triggered, this, &MainWindow::choseFloodFill);
+    connect(ui->toolBar->addAction("open"),
+            &QAction::triggered, this, &MainWindow::open);
+    connect(ui->toolBar->addAction("save"),
+            &QAction::triggered, this, &MainWindow::save);
 
 
 
@@ -87,4 +91,50 @@ void MainWindow::choseFloodFill()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<FloodFillStrategy>();
 }
+void MainWindow::open()
+{
+    if (maybeSave()){
+        QString fileName = QFileDialog::getOpenFileName(this,
+                           tr("Open File"), QDir::currentPath());
+        if (!fileName.isEmpty())
+            scribbleArea->openImage(fileName);
+    }
+}
+void MainWindow::save()
+{
+    //QAction *action = qobject_cast<QAction *>(sender());
+    //QByteArray fileFormat = action->data().toByteArray();
+    saveFile("png");
+}
+bool MainWindow::maybeSave()
+{
+    if (scribbleArea->isModified()) {
+       QMessageBox::StandardButton res;
+       res = QMessageBox::warning(this, tr("PaintApplication"),
+                          tr("The image has been modified.\n"
+                             "Do you want to save your changes?"),
+                          QMessageBox::Save | QMessageBox::Discard
+                          | QMessageBox::Cancel);
+        if (res == QMessageBox::Save)
+            return saveFile("png");
+        else if (res == QMessageBox::Cancel)
+            return false;
+    }
+    return true;
+}
+bool MainWindow::saveFile(const QByteArray &fileFormat)
+{
+    QString initialPath = QDir::currentPath() + "/untitled." + fileFormat;
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"),
+                               initialPath,
+                               tr("%1 Files (*.%2);;All Files (*)")
+                               .arg(QString::fromLatin1(fileFormat.toUpper()))
+                               .arg(QString::fromLatin1(fileFormat)));
+    if (fileName.isEmpty())
+        return false;
+    return scribbleArea->saveImage(fileName, fileFormat.constData());
+}
+
+
 
