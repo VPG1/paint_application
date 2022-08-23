@@ -33,6 +33,10 @@ private slots:
     void choseRectangle();
     void choseEllipse();
     void choseFloodFill();
+    
+    void open();
+    void save();
+
 
 private:
     Ui::MainWindow *ui;
@@ -42,5 +46,8 @@ private:
     QSize m_colorPixmapSize = QSize(20, 20);
     QAction *m_changeColorAction;
     QAction *m_changePenWidthAction;
+    
+    bool maybeSave();
+    bool saveFile(const QByteArray &fileFormat);
 };
 #endif // MAINWINDOW_H
