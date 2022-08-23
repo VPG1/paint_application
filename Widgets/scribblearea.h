@@ -17,6 +17,9 @@ class ScribbleArea : public QWidget
 public:
     ScribbleArea(QWidget *parent = nullptr);
     ~ScribbleArea();
+    bool openImage(const QString &fileName);
+    bool saveImage(const QString &fileName, const char *fileFormat);
+    bool isModified() const { return modified; }
 protected:
     void paintEvent(QPaintEvent *) override;
     void mousePressEvent(QMouseEvent *) override;
@@ -28,8 +31,10 @@ private:
 
     std::deque<QImage> m_previousStates;
     std::deque<QImage>::iterator m_curImage;
-
-    bool m_scribbling = false; // происходит ли рисование в данный момент времен
+    
+    void resizeImage(QImage *image, const QSize &newSize);
+    bool scribbling = false; // происходит ли рисование в данный момент времен
+    bool modified = false;
 
 public slots:
     void updateAreaSlot(QRect rect);
