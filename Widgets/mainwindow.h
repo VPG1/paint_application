@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include<QFileDialog>
+#include<QDir>
+#include<QMessageBox>
 #include <QLabel>
 #include <QMainWindow>
 #include <QPushButton>
@@ -36,6 +39,7 @@ private slots:
     
     void open();
     void save();
+    void about();
 
 
 private:

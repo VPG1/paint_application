@@ -25,9 +25,20 @@ bool ScribbleArea::openImage(const QString &fileName)
         if (!loadedImage.load(fileName))
             return false;
 
-        QSize newSize = loadedImage.size().expandedTo(size());
-        resizeImage(&loadedImage, newSize);
-        image = loadedImage;
+        //QSize newSize = loadedImage.size().expandedTo(size());
+        QSize def(1000, 1000);
+        QSize newSize = loadedImage.size();
+        if (newSize.height() <= def.height() && newSize.width() <= def.width()){
+            resizeImage(&loadedImage, def);
+        }
+        else if (newSize.height() > def.height() && newSize.width() > def.width()){
+            QSize diff = newSize - def;
+            QSize bas(200, 200);
+            newSize += diff;
+            newSize += bas;
+            resizeImage(&loadedImage, newSize);
+        }
+        m_image = loadedImage;
         modified = false;
         update();
         return true;
@@ -35,7 +46,7 @@ bool ScribbleArea::openImage(const QString &fileName)
 
 bool ScribbleArea::saveImage(const QString &fileName, const char *fileFormat)
 {
-    QImage visibleImage = image;
+    QImage visibleImage = m_image;
     //resizeImage(&visibleImage, size());
 
     if (visibleImage.save(fileName, fileFormat)) {
@@ -129,4 +140,10 @@ void ScribbleArea::redo()
         m_image = m_curImage->copy();
         update();
     }
+}
+
+void ScribbleArea::clear()
+{
+     m_image.fill(Qt::white);
+     update();
 }
