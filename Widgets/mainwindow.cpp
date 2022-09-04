@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
-
     setCentralWidget(m_scribbleArea);
 
     // init draw actions
@@ -27,9 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
             &QAction::triggered, this, &MainWindow::open);
     connect(ui->toolBar->addAction("save"),
             &QAction::triggered, this, &MainWindow::save);*/
-
-
-
 
     QAction* pen = new QAction(this);
     pen->setIcon(QIcon(":/Icons/pencil.png"));
