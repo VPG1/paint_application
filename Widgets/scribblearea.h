@@ -33,7 +33,7 @@ private:
     std::deque<QImage>::iterator m_curImage;
     
     void resizeImage(QImage *image, const QSize &newSize);
-    bool scribbling = false; // происходит ли рисование в данный момент времен
+    bool m_scribbling = false; // происходит ли рисование в данный момент времен
     bool modified = false;
 
 public slots:
@@ -41,6 +41,7 @@ public slots:
 
     void undo();
     void redo();
+    void clear();
 };
 
 #endif // SCRIBBLEAREA_H

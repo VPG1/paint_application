@@ -3,6 +3,8 @@
 
 #include <QLabel>
 #include <QMainWindow>
+#include <QMessageBox>
+#include <QFileDialog>
 #include <QPushButton>
 #include <QAction>
 #include <QColorDialog>
@@ -36,6 +38,7 @@ private slots:
     
     void open();
     void save();
+    void about();
 
 
 private:
@@ -46,6 +49,7 @@ private:
     QSize m_colorPixmapSize = QSize(20, 20);
     QAction *m_changeColorAction;
     QAction *m_changePenWidthAction;
+    bool Pencil;
     
     bool maybeSave();
     bool saveFile(const QByteArray &fileFormat);

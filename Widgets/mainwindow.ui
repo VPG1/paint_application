@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>PaintApplication</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../MyIcons.qrc">
+    <normaloff>:/Icons/colors pallete.png</normaloff>:/Icons/colors pallete.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -20,7 +24,7 @@
      <x>0</x>
      <y>0</y>
      <width>849</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>
@@ -37,6 +41,8 @@
    </attribute>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../MyIcons.qrc"/>
+ </resources>
  <connections/>
 </ui>
