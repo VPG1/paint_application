@@ -135,11 +135,13 @@ MainWindow::MainWindow(QWidget *parent)
     QAction *zoomActionIn = new QAction("zoom in");
     zoomActionIn->setShortcut(QKeySequence::ZoomIn);
     ui->toolBar->addAction(zoomActionIn);
+    zoomActionIn->setIcon(QIcon(":/Icons/zoom_big.png"));
     connect(zoomActionIn, &QAction::triggered, m_scribbleArea, &ScribbleArea::zoomIn);
 
     QAction *zoomActionOut = new QAction("zoom out");
     zoomActionOut->setShortcut(QKeySequence::ZoomOut);
     ui->toolBar->addAction(zoomActionOut);
+    zoomActionOut->setIcon(QIcon(":/Icons/zoom_small.png"));
     connect(zoomActionOut, &QAction::triggered, m_scribbleArea, &ScribbleArea::zoomOut);
 
 

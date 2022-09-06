@@ -12,5 +12,7 @@
         <file>redo.png</file>
         <file>save.png</file>
         <file>colors pallete.png</file>
+        <file>zoom_big.png</file>
+        <file>zoom_small.png</file>
     </qresource>
 </RCC>
