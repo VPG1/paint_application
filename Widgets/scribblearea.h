@@ -6,6 +6,8 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <deque>
+#include <QScrollArea>
+#include <QScrollBar>
 #include "usersettings.h"
 #include "pendrawstrategy.h"
 #include "linedrawstrategy.h"
@@ -27,7 +29,10 @@ protected:
     void mouseReleaseEvent(QMouseEvent *) override;
 
 private:
+    int m_imageWidth = 1000;
+    int m_imageHeight = 700;
     QImage m_image; // переменная для хранения рисунка пользователя
+
 
     std::deque<QImage> m_previousStates;
     std::deque<QImage>::iterator m_curImage;
@@ -42,6 +47,8 @@ public slots:
     void undo();
     void redo();
     void clear();
+    void zoomIn();
+    void zoomOut();
 };
 
 #endif // SCRIBBLEAREA_H

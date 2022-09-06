@@ -4,11 +4,26 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , m_scribbleArea(new ScribbleArea(this))
+    , m_scrollArea(new QScrollArea)
+    , m_scribbleArea(new ScribbleArea)
 {
 
     ui->setupUi(this);
-    setCentralWidget(m_scribbleArea);
+
+//    auto scrollArea = new QScrollArea;
+//    m_scribbleArea->setFixedSize(1000, 700);
+//    m_scribbleArea->setAutoFillBackground(true);
+////    m_scribbleArea
+//    scrollArea->setWidget(m_scribbleArea);
+//    setCentralWidget(m_scribbleArea);
+    m_scrollArea = new QScrollArea;
+    m_scrollArea->setWidget(m_scribbleArea);
+    m_scrollArea->setBackgroundRole(QPalette::Dark);
+    m_scrollArea->setWidgetResizable(true);
+    setCentralWidget(m_scrollArea);
+
+
+
 
     // init draw actions
 
@@ -115,6 +130,20 @@ MainWindow::MainWindow(QWidget *parent)
     connect(redoAction, &QAction::triggered, m_scribbleArea, &ScribbleArea::redo);
 
     ui->toolBar->unsetCursor();
+
+    // init zoom in zoom out actions
+    QAction *zoomActionIn = new QAction("zoom in");
+    zoomActionIn->setShortcut(QKeySequence::ZoomIn);
+    ui->toolBar->addAction(zoomActionIn);
+    connect(zoomActionIn, &QAction::triggered, m_scribbleArea, &ScribbleArea::zoomIn);
+
+    QAction *zoomActionOut = new QAction("zoom out");
+    zoomActionOut->setShortcut(QKeySequence::ZoomOut);
+    ui->toolBar->addAction(zoomActionOut);
+    connect(zoomActionOut, &QAction::triggered, m_scribbleArea, &ScribbleArea::zoomOut);
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -161,6 +190,8 @@ void MainWindow::choseFloodFill()
     QCursor cursorFloodFill = QCursor(QPixmap(":/Icons/pouring paint_cursor.png"));
     this->setCursor(cursorFloodFill);
 }
+
+
 void MainWindow::open()
 {
     if (maybeSave()){

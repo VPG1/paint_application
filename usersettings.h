@@ -19,6 +19,7 @@ public:
     QColor color = Qt::black;
     int penWidth = 5;
     std::unique_ptr<DrawStrategy> drawStrategy;
+    double zoom = 1;
 
     static UserSettings *getInstance();
 };

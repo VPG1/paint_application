@@ -17,12 +17,14 @@ class EllipseDrawStrategy : public DrawStrategy
 public:
     EllipseDrawStrategy();
 
-    void press(QMouseEvent *event, QImage *image) override;
-    void move(QMouseEvent *event) override;
-    void release(QMouseEvent *event) override;
+    void press(QPoint clickedPoint, QImage *image) override;
+    void move(QPoint clickedPoint) override;
+    void release(QPoint clickedPoint) override;
 
 private:
     void drawEllepse(QPoint endPoint);
+
+    void initPainter();
 };
 
 #endif // ELLIPSEDRAWSTRATEGY_H

@@ -3,26 +3,25 @@
 PenDrawStrategy::PenDrawStrategy() : DrawStrategy()
 {}
 
-void PenDrawStrategy::press(QMouseEvent *event, QImage *image)
+void PenDrawStrategy::press(QPoint clickedPoint, QImage *image)
 {
     m_image = image;
 
     m_painter = new QPainter(image);
-    m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
-                             Qt::RoundJoin));
+    initPainter();
 
-    m_lastPoint = event->pos();
+    m_lastPoint = clickedPoint;
 
 }
 
-void PenDrawStrategy::move(QMouseEvent *event)
+void PenDrawStrategy::move(QPoint clickedPoint)
 {
-    drawLineTo(event->pos());
+    drawLineTo(clickedPoint);
 }
 
-void PenDrawStrategy::release(QMouseEvent *event)
+void PenDrawStrategy::release(QPoint clickedPoint)
 {
-    drawLineTo(event->pos());
+    drawLineTo(clickedPoint);
 
     m_painter->end();
 }
@@ -37,4 +36,11 @@ void PenDrawStrategy::drawLineTo(QPoint endPoint)
 //    emit updateArea(QRect(lastPoint, endPoint).normalized().adjusted(-rad, -rad, rad, rad));
 
     m_lastPoint = endPoint;
+}
+
+void PenDrawStrategy::initPainter()
+{
+    m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
+                             Qt::RoundJoin));
+    m_painter->setRenderHint(QPainter::Antialiasing);
 }

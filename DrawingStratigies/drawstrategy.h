@@ -9,9 +9,9 @@ public:
     DrawStrategy() = default;
     virtual ~DrawStrategy(){}
 
-    virtual void press(QMouseEvent *event, QImage *image) = 0;
-    virtual void move(QMouseEvent *event) = 0;
-    virtual void release(QMouseEvent *event) = 0;
+    virtual void press(QPoint clickedPoint, QImage *image) = 0;
+    virtual void move(QPoint clickedPoint) = 0;
+    virtual void release(QPoint clickedPoint) = 0;
 };
 
 #endif // DRAWSTRATEGY_H

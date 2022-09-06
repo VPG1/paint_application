@@ -14,11 +14,14 @@ class PenDrawStrategy : public DrawStrategy
 public:
     PenDrawStrategy();
 
-    void press(QMouseEvent *event, QImage *painter) override;
-    void move(QMouseEvent *event) override;
-    void release(QMouseEvent *event) override;
+    void press(QPoint clickedPoint, QImage *painter) override;
+    void move(QPoint clickedPoint) override;
+    void release(QPoint clickedPoint) override;
 
+private:
     void drawLineTo(QPoint endPoint);
+
+    void initPainter();
 };
 
 #endif // PENDRAWSTRATEGY_H

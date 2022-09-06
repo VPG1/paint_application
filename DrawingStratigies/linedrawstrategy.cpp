@@ -5,34 +5,33 @@ LineDrawStrategy::LineDrawStrategy()
 
 }
 
-void LineDrawStrategy::press(QMouseEvent *event, QImage *image)
+void LineDrawStrategy::press(QPoint clickedPoint, QImage *image)
 {
     m_image = image;
     m_firstImage = m_image->copy();
 
 
     m_painter = new QPainter(m_image);
-    m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
-                             Qt::RoundJoin));
+    initPainter();
 
-    m_firstPoint = event->pos();
+    m_firstPoint = clickedPoint;
 }
 
-void LineDrawStrategy::move(QMouseEvent *event)
+void LineDrawStrategy::move(QPoint clickedPoint)
 {
     m_painter->end();
+
     *m_image = m_firstImage.copy();
+
     m_painter->begin(m_image);
+    initPainter();
 
-    m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
-                             Qt::RoundJoin));
-
-    drawLineTo(event->pos());
+    drawLineTo(clickedPoint);
 }
 
-void LineDrawStrategy::release(QMouseEvent *event)
+void LineDrawStrategy::release(QPoint clickedPoint)
 {
-    drawLineTo(event->pos());
+    drawLineTo(clickedPoint);
     m_painter->end();
 }
 
@@ -44,4 +43,11 @@ void LineDrawStrategy::drawLineTo(QPoint endPoint)
     // учитываем penWidth при обновление
 //    int rad = (UserSettings::getInstance()->penWidth / 2) + 2;
 //    emit updateArea(QRect(firstPoint, endPoint).normalized().adjusted(-rad, -rad, rad, rad));
+}
+
+void LineDrawStrategy::initPainter()
+{
+    m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
+                             Qt::RoundJoin));
+    m_painter->setRenderHint(QPainter::Antialiasing);
 }

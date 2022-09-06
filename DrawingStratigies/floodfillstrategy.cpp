@@ -5,18 +5,18 @@ FloodFillStrategy::FloodFillStrategy()
 
 }
 
-void FloodFillStrategy::press(QMouseEvent *event, QImage *image)
+void FloodFillStrategy::press(QPoint clickedPoint, QImage *image)
 {
-    floodFill(*image, event->pos(), UserSettings::getInstance()->color);
+    floodFill(*image, clickedPoint, UserSettings::getInstance()->color);
 //    floodFill(ima)
 }
 
-void FloodFillStrategy::move(QMouseEvent *)
+void FloodFillStrategy::move(QPoint)
 {
     // ничего не делаем
 }
 
-void FloodFillStrategy::release(QMouseEvent *)
+void FloodFillStrategy::release(QPoint)
 {
     // ничего не делаем
 }

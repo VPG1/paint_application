@@ -1,12 +1,16 @@
 #include "scribblearea.h"
 
 ScribbleArea::ScribbleArea(QWidget *parent)
-    :  QWidget(parent), m_image(1000, 1000, QImage::Format_RGB32)
+    :  QWidget(parent), m_image(m_imageWidth, m_imageHeight, QImage::Format_RGB32)
 {
     m_image.fill(Qt::white);
 
+//    setFixedSize(m_imageWidth, m_imageHeight);
+
     // содержимое находится в верхнем левом углу и не изменеяется при изменении размеров окна
-    setAttribute(Qt::WA_StaticContents);
+//    setAttribute(Qt::WA_StaticContents);
+
+    setMinimumSize(m_imageWidth + 10, m_imageHeight + 10);
 
     m_previousStates.push_back(m_image.copy());
     m_curImage = m_previousStates.begin();
@@ -58,7 +62,14 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QRect boudingRect = event->rect(); // область которую нужно перерисовать
-    painter.drawImage(boudingRect, m_image, boudingRect);
+
+    double zoom = UserSettings::getInstance()->zoom;
+    QImage zoomedImage = m_image.scaled(m_image.width() * zoom, m_image.height() * zoom, Qt::KeepAspectRatio);
+
+    setMinimumSize(m_imageWidth * zoom + 10, m_imageHeight * zoom + 10);
+
+    painter.drawImage(5, 5, zoomedImage);
+//    painter.drawImage(boudingRect, zoomedImage, boudingRect);
 }
 
 void ScribbleArea::mousePressEvent(QMouseEvent *event)
@@ -70,19 +81,30 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
 
     if(event->button() == Qt::LeftButton){
-        UserSettings::getInstance()->drawStrategy->press(event, &m_image);
+//        int verticalOffset = UserSettings::getInstance()->verticalOffset;
+//        int horizontalOffset = UserSettings::getInstance()->horizontalOffset;
+        double zoom = UserSettings::getInstance()->zoom;
+        QPoint clickedPoint(event->pos().x() / zoom, event->pos().y() / zoom);
+
+        qDebug() << clickedPoint << event->pos();
+
+        UserSettings::getInstance()->drawStrategy->press(clickedPoint, &m_image);
 
         m_scribbling = true;
 
-
         update();
     }
+
 }
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
     if((event->buttons() & Qt::LeftButton) && m_scribbling){
-        UserSettings::getInstance()->drawStrategy->move(event);
+        double zoom = UserSettings::getInstance()->zoom;
+        QPoint clickedPoint(double(event->pos().x()) / zoom, double(event->pos().y()) / zoom);
+
+
+        UserSettings::getInstance()->drawStrategy->move(clickedPoint);
 
         update();
     }
@@ -91,7 +113,10 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton && m_scribbling){
-        UserSettings::getInstance()->drawStrategy->release(event);
+        double zoom = UserSettings::getInstance()->zoom;
+        QPoint clickedPoint(event->pos().x() / zoom, event->pos().y() / zoom);
+
+        UserSettings::getInstance()->drawStrategy->release(clickedPoint);
 
         m_scribbling = false;
         modified = true;
@@ -147,4 +172,48 @@ void ScribbleArea::clear()
 {
      m_image.fill(Qt::white);
      update();
+}
+
+void ScribbleArea::zoomIn()
+{
+    double curZoom =  UserSettings::getInstance()->zoom;
+
+    if(curZoom > 7.9){ // если zoom == 8, то ничего не делаем
+        return;
+    }
+
+    if(curZoom < 0.91){ // если zoom < 1, то увеличиваем на 0.1
+        UserSettings::getInstance()->zoom += 0.1;
+    }
+    else if(curZoom < 1.9){ // если текущий 1 <= zoom < 2, то увеличиваем на 0.25
+        UserSettings::getInstance()->zoom += 0.25;
+    }
+    else if(UserSettings::getInstance()->zoom < 7.9){ // если 2 <= zoom < 8, то увеличиваем на 1
+        UserSettings::getInstance()->zoom += 1;
+    }
+    qDebug() << UserSettings::getInstance()->zoom;
+
+    update();
+}
+
+void ScribbleArea::zoomOut()
+{
+    double curZoom =  UserSettings::getInstance()->zoom;
+
+    if(curZoom < 0.31){ // если zoom == 0.3, то ничего не делаем
+        return;
+    }
+
+    if(curZoom < 1.1){ // если zoom <= 1, то уменьшаем на 0.1
+        UserSettings::getInstance()->zoom -= 0.1;
+    }
+    else if(curZoom < 1.9){ // если 1 < zoom <= 2, то уменьшаем на 0.25
+        UserSettings::getInstance()->zoom -= 0.25;
+    }
+    else if(curZoom < 8.1){ // если 2 < zoom <= 8, то уменьшаем на 1
+        UserSettings::getInstance()->zoom -= 1;
+    }
+    qDebug() << UserSettings::getInstance()->zoom;
+
+    update();
 }

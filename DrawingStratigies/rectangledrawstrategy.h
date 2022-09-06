@@ -16,12 +16,14 @@ class RectangleDrawStrategy : public DrawStrategy
 public:
     RectangleDrawStrategy();
 
-    void press(QMouseEvent *event, QImage *image) override;
-    void move(QMouseEvent *event) override;
-    void release(QMouseEvent *event) override;
+    void press(QPoint clickedPoint, QImage *image) override;
+    void move(QPoint clickedPoint) override;
+    void release(QPoint clickedPoint) override;
 
 private:
     void drawRectangleTo(QPoint endPoint);
+
+    void initPainter();
 };
 
 #endif // RECTANGLEDRAWSTRATEGY_H

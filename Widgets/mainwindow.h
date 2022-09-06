@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QAction>
 #include <QColorDialog>
+#include <QScrollArea>
 #include "scribblearea.h"
 #include "usersettings.h"
 #include "slider.h"
@@ -35,7 +36,8 @@ private slots:
     void choseRectangle();
     void choseEllipse();
     void choseFloodFill();
-    
+
+
     void open();
     void save();
     void about();
@@ -44,6 +46,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
+    QScrollArea *m_scrollArea;
     ScribbleArea *m_scribbleArea;
 
     QSize m_colorPixmapSize = QSize(20, 20);
