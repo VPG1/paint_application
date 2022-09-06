@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->toolBar->addAction(pen);
     connect(pen, &QAction::triggered, this,  &MainWindow::chosePen);
     QCursor cursorPencil = QCursor(QPixmap(":/Icons/pencil_cursor.png"));
-    this->setCursor(cursorPencil);
+    m_scribbleArea->setCursor(cursorPencil);
 
     //QCursor cursorPencil = QCursor(QPixmap(":/Icons/pencil.png"));
     //ui->toolBar->setCursor(cursorPencil);
@@ -163,32 +163,32 @@ void MainWindow::chosePen()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<PenDrawStrategy>();
     QCursor cursorPencil = QCursor(QPixmap(":/Icons/pencil_cursor.png"));
-    this->setCursor(cursorPencil);
+    m_scribbleArea->setCursor(cursorPencil);
 }
 
 void MainWindow::choseLine()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<LineDrawStrategy>();
-    this->unsetCursor();
+    m_scribbleArea->unsetCursor();
 }
 
 void MainWindow::choseRectangle()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<RectangleDrawStrategy>();
-    this->unsetCursor();
+    m_scribbleArea->unsetCursor();
 }
 
 void MainWindow::choseEllipse()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<EllipseDrawStrategy>();
-    this->unsetCursor();
+    m_scribbleArea->unsetCursor();
 }
 
 void MainWindow::choseFloodFill()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<FloodFillStrategy>();
     QCursor cursorFloodFill = QCursor(QPixmap(":/Icons/pouring paint_cursor.png"));
-    this->setCursor(cursorFloodFill);
+    m_scribbleArea->setCursor(cursorFloodFill);
 }
 
 
