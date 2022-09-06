@@ -143,9 +143,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->toolBar->addAction(zoomActionOut);
     zoomActionOut->setIcon(QIcon(":/Icons/zoom_small.png"));
     connect(zoomActionOut, &QAction::triggered, m_scribbleArea, &ScribbleArea::zoomOut);
-
-
-
 }
 
 MainWindow::~MainWindow()
@@ -171,19 +168,19 @@ void MainWindow::chosePen()
 void MainWindow::choseLine()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<LineDrawStrategy>();
-    m_scribbleArea->unsetCursor();
+    m_scribbleArea->setCursor(QCursor(Qt::CrossCursor));
 }
 
 void MainWindow::choseRectangle()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<RectangleDrawStrategy>();
-    m_scribbleArea->unsetCursor();
+    m_scribbleArea->setCursor(QCursor(Qt::CrossCursor));
 }
 
 void MainWindow::choseEllipse()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<EllipseDrawStrategy>();
-    m_scribbleArea->unsetCursor();
+    m_scribbleArea->setCursor(QCursor(Qt::CrossCursor));
 }
 
 void MainWindow::choseFloodFill()

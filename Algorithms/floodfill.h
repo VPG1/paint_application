@@ -5,6 +5,7 @@
 #include <QPoint>
 #include <QPainter>
 #include <deque>
+#include <QApplication>
 
 void floodFill(QImage& image, QPoint seed, QColor newColor);
 

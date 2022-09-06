@@ -13,6 +13,7 @@ std::deque<QPoint> getPoints(QImage& image, QPoint seed)
 
     QRgb* bits = reinterpret_cast<QRgb*>(image.bits());
 
+
     const auto getPixel = [&](int x, int y) {
         return bits[(y * width) + x];
     };
@@ -30,6 +31,7 @@ std::deque<QPoint> getPoints(QImage& image, QPoint seed)
         const int y = point.y();
         if (x >= 0 && y >= 0 && x < width && y < height) {
             const QRgb rgba = getPixel(x, y);
+
             if (rgba == oldRgba) {
                 unsigned char& isProcessedAlready = processedAlready[(y * width) + x];
                 if (!isProcessedAlready) {
@@ -59,9 +61,10 @@ void floodFill(QImage& image, QPoint seed, QColor newColor)
     QPainter painter(&image);
     painter.setPen(newColor);
     painter.setBrush(newColor);
+    painter.setRenderHint(QPainter::Antialiasing);
     painter.setCompositionMode(QPainter::CompositionMode_Source);
 
-    for (const QPoint& point : points) {
+    for (const QPoint& point : points){
         painter.drawPoint(point);
     }
 }

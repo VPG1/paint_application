@@ -1,7 +1,7 @@
 #include "scribblearea.h"
 
 ScribbleArea::ScribbleArea(QWidget *parent)
-    :  QWidget(parent), m_image(m_imageWidth, m_imageHeight, QImage::Format_RGB32)
+    :  QWidget(parent), m_image(m_imageWidth, m_imageHeight, QImage::Format_ARGB32_Premultiplied)
 {
     m_image.fill(Qt::white);
 

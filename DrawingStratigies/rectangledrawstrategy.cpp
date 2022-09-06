@@ -49,5 +49,5 @@ void RectangleDrawStrategy::initPainter()
 {
     m_painter->setPen(QPen(UserSettings::getInstance()->color, UserSettings::getInstance()->penWidth, Qt::SolidLine, Qt::RoundCap,
                              Qt::RoundJoin));
-    m_painter->setRenderHint(QPainter::Antialiasing);
+//    m_painter->setRenderHint(QPainter::Antialiasing);
 }
