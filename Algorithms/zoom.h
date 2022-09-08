@@ -3,9 +3,11 @@
 
 #include <QPoint>
 #include <QDebug>
+#include <QObject>
 
-class Zoom
+class Zoom : public QObject
 {
+    Q_OBJECT
 public:
     Zoom();
     double getCurZoom();
@@ -14,6 +16,9 @@ public:
     void zoomOut();
 
     void wheelZooming(int angleDelta);
+
+signals:
+    void zoomChange(double newZoom);
 
 private:
     double m_curZoom = 1;

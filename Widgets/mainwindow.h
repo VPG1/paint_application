@@ -15,6 +15,7 @@
 #include "rectangledrawstrategy.h"
 #include "ellipsedrawstrategy.h"
 #include "floodfillstrategy.h"
+#include "zoom.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -37,6 +38,7 @@ private slots:
     void choseEllipse();
     void choseFloodFill();
 
+    void changeZoomLabel(double newZoom);
 
     void open();
     void save();
@@ -48,6 +50,8 @@ private:
 
     QScrollArea *m_scrollArea;
     ScribbleArea *m_scribbleArea;
+
+    QLabel *zoomLabel;
 
     QSize m_colorPixmapSize = QSize(20, 20);
     QAction *m_changeColorAction;

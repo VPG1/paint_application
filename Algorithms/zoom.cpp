@@ -1,6 +1,6 @@
 #include "zoom.h"
 
-Zoom::Zoom()
+Zoom::Zoom() : QObject()
 {
 
 }
@@ -21,6 +21,7 @@ void Zoom::zoomIn()
         return;
     }
 
+
     if(m_curZoom < 0.91){ // если zoom < 1, то увеличиваем на 0.1
         m_curZoom += 0.1;
     }
@@ -30,6 +31,8 @@ void Zoom::zoomIn()
     else if(m_curZoom < 7.9){ // если 2 <= zoom < 8, то увеличиваем на 1
         m_curZoom += 1;
     }
+
+    emit zoomChange(m_curZoom);
 }
 
 void Zoom::zoomOut()
@@ -47,6 +50,8 @@ void Zoom::zoomOut()
     else if(m_curZoom < 8.1){ // если 2 < zoom <= 8, то уменьшаем на 1
         m_curZoom -= 1;
     }
+
+    emit zoomChange(m_curZoom);
 }
 
 void Zoom::wheelZooming(int angleDelta)
@@ -68,4 +73,6 @@ void Zoom::wheelZooming(int angleDelta)
     qDebug() << a;
 
     m_curZoom += a;
+
+    emit zoomChange(m_curZoom);
 }

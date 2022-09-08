@@ -3,7 +3,7 @@
 
 std::unique_ptr<UserSettings> UserSettings::instance = nullptr;
 
-UserSettings::UserSettings() : drawStrategy(std::make_unique<PenDrawStrategy>())
+UserSettings::UserSettings() : drawStrategy(std::make_unique<PenDrawStrategy>()), zoom(new Zoom)
 {
 
 }

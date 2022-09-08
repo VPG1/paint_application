@@ -63,7 +63,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     QRect boudingRect = event->rect(); // область которую нужно перерисовать
 
-    double zoom = UserSettings::getInstance()->zoom.getCurZoom();
+    double zoom = UserSettings::getInstance()->zoom->getCurZoom();
     QImage zoomedImage = m_image.scaled(m_image.width() * zoom, m_image.height() * zoom, Qt::KeepAspectRatio);
 
     setMinimumSize(m_imageWidth * zoom + 10, m_imageHeight * zoom + 10);
@@ -81,7 +81,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
     if(event->button() == Qt::LeftButton){
         // рисуем с учетом zoom-а
-        UserSettings::getInstance()->drawStrategy->press(UserSettings::getInstance()->zoom.getZoomedPoint(event->pos()), &m_image);
+        UserSettings::getInstance()->drawStrategy->press(UserSettings::getInstance()->zoom->getZoomedPoint(event->pos()), &m_image);
 
         m_scribbling = true;
 
@@ -95,7 +95,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
     if((event->buttons() & Qt::LeftButton) && m_scribbling){
         // рисуем с учетом zoom-а
-        UserSettings::getInstance()->drawStrategy->move(UserSettings::getInstance()->zoom.getZoomedPoint(event->pos()));
+        UserSettings::getInstance()->drawStrategy->move(UserSettings::getInstance()->zoom->getZoomedPoint(event->pos()));
 
         // перерисовываем
         update();
@@ -106,7 +106,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton && m_scribbling){
         // рисуем с учетом zoom-а
-        UserSettings::getInstance()->drawStrategy->release(UserSettings::getInstance()->zoom.getZoomedPoint(event->pos()));
+        UserSettings::getInstance()->drawStrategy->release(UserSettings::getInstance()->zoom->getZoomedPoint(event->pos()));
 
         m_scribbling = false;
         modified = true;
@@ -131,7 +131,7 @@ void ScribbleArea::wheelEvent(QWheelEvent *event)
     if(event->modifiers() & Qt::ControlModifier){
         QPoint numDegrees = event->angleDelta() / 8;
         if (!numDegrees.isNull()) {
-            UserSettings::getInstance()->zoom.wheelZooming(numDegrees.y());
+            UserSettings::getInstance()->zoom->wheelZooming(numDegrees.y());
         }
         update();
     }
@@ -185,14 +185,14 @@ void ScribbleArea::clear()
 
 void ScribbleArea::zoomIn()
 {
-    UserSettings::getInstance()->zoom.zoomIn();
-    qDebug() << UserSettings::getInstance()->zoom.getCurZoom();
+    UserSettings::getInstance()->zoom->zoomIn();
+    qDebug() << UserSettings::getInstance()->zoom->getCurZoom();
     update();
 }
 
 void ScribbleArea::zoomOut()
 {
-    UserSettings::getInstance()->zoom.zoomOut();
-    qDebug() << UserSettings::getInstance()->zoom.getCurZoom();
+    UserSettings::getInstance()->zoom->zoomOut();
+    qDebug() << UserSettings::getInstance()->zoom->getCurZoom();
     update();
 }

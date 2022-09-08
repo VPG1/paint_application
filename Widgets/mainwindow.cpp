@@ -18,7 +18,11 @@ MainWindow::MainWindow(QWidget *parent)
     m_scrollArea->setWidgetResizable(true);
     setCentralWidget(m_scrollArea);
 
-
+    //init statusbar
+    ui->statusbar->setSizeGripEnabled(true);
+    zoomLabel = new QLabel("100%");
+    ui->statusbar->addPermanentWidget(zoomLabel);
+    connect(UserSettings::getInstance()->zoom, &Zoom::zoomChange, this, &MainWindow::changeZoomLabel);
 
     // init draw actions
     QAction* pen = new QAction(this);
@@ -34,7 +38,6 @@ MainWindow::MainWindow(QWidget *parent)
     line->setIcon(QIcon(":/Icons/line.png"));
     line->setIconText("line");
     ui->toolBar->addAction(line);
-    ui->toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     connect(line, &QAction::triggered, this, &MainWindow::choseLine);
 
     QAction* rectangle = new QAction(this);
@@ -166,6 +169,11 @@ void MainWindow::choseFloodFill()
     QCursor cursorFloodFill = QCursor(QPixmap(":/Icons/pouring paint_cursor.png"), 0, 25);
     qDebug() << QPixmap(":/Icons/pouring paint_cursor.png");
     m_scribbleArea->setCursor(cursorFloodFill);
+}
+
+void MainWindow::changeZoomLabel(double newZoom)
+{
+    zoomLabel->setText(QString("%1%").arg(int(newZoom * 100)));
 }
 
 void MainWindow::open()
