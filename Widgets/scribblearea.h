@@ -8,6 +8,7 @@
 #include <deque>
 #include <QScrollArea>
 #include <QScrollBar>
+#include <QWheelEvent>
 #include "usersettings.h"
 #include "pendrawstrategy.h"
 #include "linedrawstrategy.h"
@@ -27,6 +28,7 @@ protected:
     void mousePressEvent(QMouseEvent *) override;
     void mouseMoveEvent(QMouseEvent *) override;
     void mouseReleaseEvent(QMouseEvent *) override;
+    void wheelEvent(QWheelEvent *) override;
 
 private:
     int m_imageWidth = 1000;

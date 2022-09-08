@@ -10,12 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
 
-//    auto scrollArea = new QScrollArea;
-//    m_scribbleArea->setFixedSize(1000, 700);
-//    m_scribbleArea->setAutoFillBackground(true);
-////    m_scribbleArea
-//    scrollArea->setWidget(m_scribbleArea);
-//    setCentralWidget(m_scribbleArea);
+
+    // init centralWidget
     m_scrollArea = new QScrollArea;
     m_scrollArea->setWidget(m_scribbleArea);
     m_scrollArea->setBackgroundRole(QPalette::Dark);
@@ -24,40 +20,21 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-
     // init draw actions
-
-    /*connect(ui->toolBar->addAction("pen"),
-            &QAction::triggered, this,  &MainWindow::chosePen);
-    connect(ui->toolBar->addAction("line"),
-            &QAction::triggered, this, &MainWindow::choseLine);
-    connect(ui->toolBar->addAction("rectangle"),
-            &QAction::triggered, this, &MainWindow::choseRectangle);
-    connect(ui->toolBar->addAction("ellipse"),
-            &QAction::triggered, this, &MainWindow::choseEllipse);
-    connect(ui->toolBar->addAction("flood fill"),
-            &QAction::triggered, this, &MainWindow::choseFloodFill);
-    connect(ui->toolBar->addAction("open"),
-            &QAction::triggered, this, &MainWindow::open);
-    connect(ui->toolBar->addAction("save"),
-            &QAction::triggered, this, &MainWindow::save);*/
-
     QAction* pen = new QAction(this);
     pen->setIcon(QIcon(":/Icons/pencil.png"));
     pen->setIconText("pencil");
     ui->toolBar->addAction(pen);
     connect(pen, &QAction::triggered, this,  &MainWindow::chosePen);
-    QCursor cursorPencil = QCursor(QPixmap(":/Icons/pencil_cursor.png"));
-    m_scribbleArea->setCursor(cursorPencil);
 
-    //QCursor cursorPencil = QCursor(QPixmap(":/Icons/pencil.png"));
-    //ui->toolBar->setCursor(cursorPencil);
-    //this->setCursor(cursorPencil);
+    QCursor cursorPencil = QCursor(QPixmap(":/Icons/pencil_cursor.png"), 0, 24);
+    m_scribbleArea->setCursor(cursorPencil);
 
     QAction* line = new QAction(this);
     line->setIcon(QIcon(":/Icons/line.png"));
     line->setIconText("line");
     ui->toolBar->addAction(line);
+    ui->toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     connect(line, &QAction::triggered, this, &MainWindow::choseLine);
 
     QAction* rectangle = new QAction(this);
@@ -102,15 +79,13 @@ MainWindow::MainWindow(QWidget *parent)
     save->setIcon(QPixmap(":/Icons/save.png"));
 
 
-    // init change color action
+    // init change color and pen width actions
     auto pixmap = QPixmap(m_colorPixmapSize);
     pixmap.fill(UserSettings::getInstance()->color);
     m_changeColorAction = new QAction(QIcon(pixmap), "change color");
     connect(m_changeColorAction, &QAction::triggered, this, &MainWindow::changingColor);
-
     ui->toolBar->addAction(m_changeColorAction);
 
-    // init change pen width action
     ui->toolBar->addWidget(new Slider);
 
 
@@ -130,6 +105,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(redoAction, &QAction::triggered, m_scribbleArea, &ScribbleArea::redo);
 
     ui->toolBar->unsetCursor();
+
 
     // init zoom in zoom out actions
     QAction *zoomActionIn = new QAction("zoom in");
@@ -161,7 +137,8 @@ void MainWindow::changingColor()
 void MainWindow::chosePen()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<PenDrawStrategy>();
-    QCursor cursorPencil = QCursor(QPixmap(":/Icons/pencil_cursor.png"));
+
+    QCursor cursorPencil = QCursor(QPixmap(":/Icons/pencil_cursor.png"), 0, 24);
     m_scribbleArea->setCursor(cursorPencil);
 }
 
@@ -186,10 +163,10 @@ void MainWindow::choseEllipse()
 void MainWindow::choseFloodFill()
 {
     UserSettings::getInstance()->drawStrategy = std::make_unique<FloodFillStrategy>();
-    QCursor cursorFloodFill = QCursor(QPixmap(":/Icons/pouring paint_cursor.png"));
+    QCursor cursorFloodFill = QCursor(QPixmap(":/Icons/pouring paint_cursor.png"), 0, 25);
+    qDebug() << QPixmap(":/Icons/pouring paint_cursor.png");
     m_scribbleArea->setCursor(cursorFloodFill);
 }
-
 
 void MainWindow::open()
 {

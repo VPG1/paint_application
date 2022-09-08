@@ -63,13 +63,12 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     QRect boudingRect = event->rect(); // область которую нужно перерисовать
 
-    double zoom = UserSettings::getInstance()->zoom;
+    double zoom = UserSettings::getInstance()->zoom.getCurZoom();
     QImage zoomedImage = m_image.scaled(m_image.width() * zoom, m_image.height() * zoom, Qt::KeepAspectRatio);
 
     setMinimumSize(m_imageWidth * zoom + 10, m_imageHeight * zoom + 10);
 
     painter.drawImage(5, 5, zoomedImage);
-//    painter.drawImage(boudingRect, zoomedImage, boudingRect);
 }
 
 void ScribbleArea::mousePressEvent(QMouseEvent *event)
@@ -81,17 +80,12 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
 
     if(event->button() == Qt::LeftButton){
-//        int verticalOffset = UserSettings::getInstance()->verticalOffset;
-//        int horizontalOffset = UserSettings::getInstance()->horizontalOffset;
-        double zoom = UserSettings::getInstance()->zoom;
-        QPoint clickedPoint(event->pos().x() / zoom, event->pos().y() / zoom);
-
-        qDebug() << clickedPoint << event->pos();
-
-        UserSettings::getInstance()->drawStrategy->press(clickedPoint, &m_image);
+        // рисуем с учетом zoom-а
+        UserSettings::getInstance()->drawStrategy->press(UserSettings::getInstance()->zoom.getZoomedPoint(event->pos()), &m_image);
 
         m_scribbling = true;
 
+        // перерисовываем
         update();
     }
 
@@ -100,12 +94,10 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
     if((event->buttons() & Qt::LeftButton) && m_scribbling){
-        double zoom = UserSettings::getInstance()->zoom;
-        QPoint clickedPoint(double(event->pos().x()) / zoom, double(event->pos().y()) / zoom);
+        // рисуем с учетом zoom-а
+        UserSettings::getInstance()->drawStrategy->move(UserSettings::getInstance()->zoom.getZoomedPoint(event->pos()));
 
-
-        UserSettings::getInstance()->drawStrategy->move(clickedPoint);
-
+        // перерисовываем
         update();
     }
 }
@@ -113,25 +105,42 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton && m_scribbling){
-        double zoom = UserSettings::getInstance()->zoom;
-        QPoint clickedPoint(event->pos().x() / zoom, event->pos().y() / zoom);
-
-        UserSettings::getInstance()->drawStrategy->release(clickedPoint);
+        // рисуем с учетом zoom-а
+        UserSettings::getInstance()->drawStrategy->release(UserSettings::getInstance()->zoom.getZoomedPoint(event->pos()));
 
         m_scribbling = false;
         modified = true;
 
+        // перерисовываем
         update();
 
 
+        // сохраняем в m_previousState для undo redo
         m_previousStates.push_back(m_image.copy());
-
         ++m_curImage;
+
+        // в случае если кол-во предыдущих состаяний канвы > 50 то удаляем самое ранее сохраненное действие
         if(m_previousStates.size() >= 51){
             m_previousStates.pop_front();
         }
     }
 }
+
+void ScribbleArea::wheelEvent(QWheelEvent *event)
+{
+    if(event->modifiers() & Qt::ControlModifier){
+        QPoint numDegrees = event->angleDelta() / 8;
+        if (!numDegrees.isNull()) {
+            UserSettings::getInstance()->zoom.wheelZooming(numDegrees.y());
+        }
+        update();
+    }
+    else{
+        QWidget::wheelEvent(event);
+    }
+}
+
+
 void ScribbleArea::resizeImage(QImage *image, const QSize &newSize)
 {
     if (image->size() == newSize)
@@ -176,44 +185,14 @@ void ScribbleArea::clear()
 
 void ScribbleArea::zoomIn()
 {
-    double curZoom =  UserSettings::getInstance()->zoom;
-
-    if(curZoom > 7.9){ // если zoom == 8, то ничего не делаем
-        return;
-    }
-
-    if(curZoom < 0.91){ // если zoom < 1, то увеличиваем на 0.1
-        UserSettings::getInstance()->zoom += 0.1;
-    }
-    else if(curZoom < 1.9){ // если текущий 1 <= zoom < 2, то увеличиваем на 0.25
-        UserSettings::getInstance()->zoom += 0.25;
-    }
-    else if(UserSettings::getInstance()->zoom < 7.9){ // если 2 <= zoom < 8, то увеличиваем на 1
-        UserSettings::getInstance()->zoom += 1;
-    }
-    qDebug() << UserSettings::getInstance()->zoom;
-
+    UserSettings::getInstance()->zoom.zoomIn();
+    qDebug() << UserSettings::getInstance()->zoom.getCurZoom();
     update();
 }
 
 void ScribbleArea::zoomOut()
 {
-    double curZoom =  UserSettings::getInstance()->zoom;
-
-    if(curZoom < 0.31){ // если zoom == 0.3, то ничего не делаем
-        return;
-    }
-
-    if(curZoom < 1.1){ // если zoom <= 1, то уменьшаем на 0.1
-        UserSettings::getInstance()->zoom -= 0.1;
-    }
-    else if(curZoom < 1.9){ // если 1 < zoom <= 2, то уменьшаем на 0.25
-        UserSettings::getInstance()->zoom -= 0.25;
-    }
-    else if(curZoom < 8.1){ // если 2 < zoom <= 8, то уменьшаем на 1
-        UserSettings::getInstance()->zoom -= 1;
-    }
-    qDebug() << UserSettings::getInstance()->zoom;
-
+    UserSettings::getInstance()->zoom.zoomOut();
+    qDebug() << UserSettings::getInstance()->zoom.getCurZoom();
     update();
 }

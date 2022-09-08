@@ -2,7 +2,8 @@
 #define USERSETTINGS_H
 
 #include <QColor>
-#include "DrawingStratigies/drawstrategy.h"
+#include "drawstrategy.h"
+#include "zoom.h"
 
 class PenDrawStrategy;
 
@@ -19,7 +20,7 @@ public:
     QColor color = Qt::black;
     int penWidth = 5;
     std::unique_ptr<DrawStrategy> drawStrategy;
-    double zoom = 1;
+    Zoom zoom;
 
     static UserSettings *getInstance();
 };

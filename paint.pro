@@ -14,6 +14,7 @@ INCLUDEPATH += $$PWD/Widgets
 
 
 SOURCES += \
+    Algorithms/zoom.cpp \
     DrawingStratigies/ellipsedrawstrategy.cpp \
     Algorithms/floodfill.cpp \
     DrawingStratigies/floodfillstrategy.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
     usersettings.cpp
 
 HEADERS += \
+    Algorithms/zoom.h \
     DrawingStratigies/drawstrategy.h \
     DrawingStratigies/ellipsedrawstrategy.h \
     Algorithms/floodfill.h \
