@@ -17,7 +17,7 @@ QPoint Zoom::getZoomedPoint(const QPoint &point)
 
 void Zoom::zoomIn()
 {
-    if(m_curZoom > 7.9){ // если zoom == 8, то ничего не делаем
+    if(m_curZoom > 5.9){ // если zoom == 8, то ничего не делаем
         return;
     }
 
@@ -28,7 +28,7 @@ void Zoom::zoomIn()
     else if(m_curZoom < 1.9){ // если текущий 1 <= zoom < 2, то увеличиваем на 0.25
         m_curZoom+= 0.25;
     }
-    else if(m_curZoom < 7.9){ // если 2 <= zoom < 8, то увеличиваем на 1
+    else if(m_curZoom < 5.9){ // если 2 <= zoom < 8, то увеличиваем на 1
         m_curZoom += 1;
     }
 
@@ -44,10 +44,10 @@ void Zoom::zoomOut()
     if(m_curZoom < 1.1){ // если zoom <= 1, то уменьшаем на 0.1
         m_curZoom -= 0.1;
     }
-    else if(m_curZoom < 1.9){ // если 1 < zoom <= 2, то уменьшаем на 0.25
+    else if(m_curZoom < 5.9){ // если 1 < zoom <= 2, то уменьшаем на 0.25
         m_curZoom -= 0.25;
     }
-    else if(m_curZoom < 8.1){ // если 2 < zoom <= 8, то уменьшаем на 1
+    else if(m_curZoom < 6.1){ // если 2 < zoom <= 8, то уменьшаем на 1
         m_curZoom -= 1;
     }
 
@@ -56,13 +56,6 @@ void Zoom::zoomOut()
 
 void Zoom::wheelZooming(int angleDelta)
 {
-    if(angleDelta < 0 && m_curZoom < 0.32){
-        return;
-    }
-    else if(angleDelta > 0 && m_curZoom > 7.99){
-        return;
-    }
-
     double a;
     if(m_curZoom < 1){
         a = double(angleDelta) / 100;
@@ -70,7 +63,13 @@ void Zoom::wheelZooming(int angleDelta)
     else{
         a = double(angleDelta) / 20;
     }
-    qDebug() << a;
+
+    if(angleDelta < 0 && m_curZoom + a < 0.29){
+        return;
+    }
+    else if(angleDelta > 0 && m_curZoom + a > 6.01){
+        return;
+    }
 
     m_curZoom += a;
 

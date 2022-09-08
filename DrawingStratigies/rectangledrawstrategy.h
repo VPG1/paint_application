@@ -22,7 +22,6 @@ public:
 
 private:
     void drawRectangleTo(QPoint endPoint);
-
     void initPainter();
 };
 
